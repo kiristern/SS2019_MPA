@@ -9,3 +9,4 @@ Kiri Stern
 >>>>>>> 30f28159e2a1ade45823e7e1a9620c4686f2b43a
 meganedeziel
 
+Methods
