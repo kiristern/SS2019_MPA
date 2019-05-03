@@ -1,9 +1,10 @@
 library("tidyverse")
 library("ggplot2")
 
-Coast <- read.csv("Coastline_Length_KM.csv", header = TRUE)
-DOxy <- read.csv("DOxy_SJ_Mean.csv", header = TRUE)
-PProd <- read.csv("PProd_SJ_Mean.csv", header = TRUE)
-SeaTemp <- read.csv("SST_SJ_Mean.csv", header = TRUE)
-Fish <- read.csv("Fish_Rich_SJ.csv", header = TRUE)
+Fish <- read.csv("Fish_MPA_Ocean_SJ.csv", header = TRUE)
 
+head(Fish)
+
+fish_selection <- select(Fish, TARGET_FID, BINOMIAL, LEGEND, WDPA_PID, NAME, DESIG, DESIG_TYPE, 
+                         IUCN_CAT, GIS_AREA, label)
+View(fish_selection)
