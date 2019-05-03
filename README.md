@@ -6,3 +6,6 @@ Kiri Stern
 Danielle Derrick
 Megane Deziel
 Juan-Andres Martinez
+
+## Methods
+
