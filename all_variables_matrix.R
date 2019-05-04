@@ -28,4 +28,29 @@ final_table_distinct %>% glimpse
 #join enviro factor columns to pivot table
 all_data_table <- merge(final_table_distinct, sp_col_final, by = "FID")
 View(all_data_table)
-write.csv(all_data_table, "all_data_table.csv")
+#write.csv(all_data_table, "all_data_table.csv")
+
+# renaming data table
+fish <- all_data_table
+head(fish)
+
+# creating cells by species matrix for ordination
+fishmatrix <- as.matrix(fish[,17:294])
+dim(fishmatrix) # 3078 cells by 278 species
+table(fishmatrix)
+# we have numbers other than 0 and 1 in the matrix
+
+fishmatrix <- if(fishmatrix>=1){
+  fishmatrix=1
+} else { 
+  fishmatrix=0
+}
+
+fish$Rich <- mutate(fishmatrix, Total_richness = sum(FID))
+
+
+
+
+
+
+
