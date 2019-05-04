@@ -48,8 +48,9 @@ fishmatrix <- if(fishmatrix>=1){
 
 fish$Rich <- mutate(fishmatrix, Total_richness = sum(FID))
 
-
-
+#add column of MPA presence
+all_data_table$MPA_presence <- ifelse(all_data_table$WDPA_PID != " ", yes = NA, no = "MPA")
+count(all_data_table, all_data_table$MPA_presence)        
 
 
 
