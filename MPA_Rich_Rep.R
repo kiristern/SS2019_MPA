@@ -52,9 +52,9 @@
 
   ggplot(data = MPA_tab, aes(MPA_tab$Prop)) +
     geom_histogram(breaks = seq(0, 100, by = 10),
-                   col = "white",
+                   col = "black",
                    aes(fill =..count..)) +
-    scale_fill_gradient("Count", low = "lightsteelblue", high = "steelblue4") + 
+    scale_fill_gradient("Count", low = "darkslategray2", high = "darkslategray4") + 
     xlab("Proportion range coverage within MPA(%)") +
     ylab("Number of unique species") +
     theme_classic()
@@ -84,7 +84,10 @@
               color = "darkslategray2", size = 2) +
     scale_y_continuous(name = "Proportion per Ocean Basin") +
     theme_classic() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank(),
+          axis.text = element_text(size = 12),
+          axis.title.y = element_text(size = 12)) +
+    scale_x_discrete(labels = function(x) {sub("\\s", "\n", x)})
     
 
   
