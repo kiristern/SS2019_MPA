@@ -38,15 +38,9 @@ head(fish)
 fishmatrix <- as.matrix(fish[,17:294])
 dim(fishmatrix) # 3078 cells by 278 species
 table(fishmatrix)
-# we have numbers other than 0 and 1 in the matrix
 
-fishmatrix <- if(fishmatrix>=1){
-  fishmatrix=1
-} else { 
-  fishmatrix=0
-}
-
-fish$Rich <- mutate(fishmatrix, Total_richness = sum(FID))
+# set all values >=1 to 1
+fishmatrix[which(fishmatrix > 1)] <- 1
 
 #add column of MPA presence
 all_data_table$MPA_presence <- ifelse(all_data_table$WDPA_PID != " ", yes = NA, no = "MPA")
