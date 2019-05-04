@@ -12,7 +12,7 @@ View(final_table)
 #create columns for each species
 sp_col <- dcast(final_table, FID ~ BINOMIAL, value.var = "Pres_Abs")
 
-#delete empty column from pivot table
+#delete empty species column 
 sp_col_final <- sp_col[,-(2)] 
 
 #merge all variables into their proper FID
