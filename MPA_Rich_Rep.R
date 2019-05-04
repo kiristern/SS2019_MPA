@@ -77,18 +77,14 @@
   Ocean <- Ocean[-c(1),]
   
 #Create Frequency plot of species richness and mpa per ocean
-  ggplot(data = Ocean, aes(x = Ocean, y = SR)) +
-    geom_line(color = "darkslategray4", size = 3) +
-    theme_classic()
+  ggplot(data = Ocean) +
+    geom_line(mapping = aes(x = Ocean, y = (SR/sum(SR)), group = 1), 
+              color = "darkslategray4", size = 2) +
+    geom_line(mapping = aes(x = Ocean, y = (MPA/sum(MPA)), group = 1), 
+              color = "darkslategray2", size = 2) +
+    scale_y_continuous(name = "Proportion per Ocean Basin") +
+    theme_classic() +
+    theme(axis.title.x = element_blank())
     
-    
-    
-    
-    geom_histogram(breaks = seq(0, 100, by = 10),
-                   col = "white",
-                   aes(fill =..count..)) +
-    scale_fill_gradient("Count", low = "lightsteelblue", high = "steelblue4") + 
-    xlab("Proportion range coverage within MPA(%)") +
-    ylab("Number of unique species") +
-    theme_classic()
+
   
