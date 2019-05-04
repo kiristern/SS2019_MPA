@@ -1,4 +1,3 @@
-
 library(vegan) # Community Ecology Package
 library(asbio) # Collection Stats Tools Biologists
 library(betapart) # Partition Beta Diversity
@@ -30,6 +29,42 @@ dim(fish) # 3072 columns,  296 columns
 # But can't include 1 nor last column (spp. richness)
 fishmatrix <- as.matrix(fish[,17:294])
 dim(fishmatrix) # 3072 sites, 278 species
+
+#AO
+fishAO <- subset(fish, fish$label=="AO")
+fishmatrixAO <- as.matrix(fishAO[,17:294])
+
+#IO
+fishIO <- subset(fish, fish$label=="IO")
+fishmatrixIO <- as.matrix(fishIO[,17:294])
+
+#NAO
+fishNAO <- subset(fish, fish$label=="NAO")
+fishmatrixNAO <- as.matrix(fishNAO[,17:294])
+
+#NPO
+fishNPO <- subset(fish, fish$label=="NPO")
+fishmatrixNPO <- as.matrix(fishNPO[,17:294])
+
+#SAO
+fishSAO <- subset(fish, fish$label=="SAO")
+fishmatrixSAO <- as.matrix(fishSAO[,17:294])
+
+#SO
+fishSO <- subset(fish, fish$label=="SO")
+fishmatrixSO <- as.matrix(fishSO[,17:294])
+
+#SPO
+fishSPO <- subset(fish, fish$label=="SPO")
+fishmatrixSPO <- as.matrix(fishSPO[,17:294])
+
+bas <- beta.div.comp(fishmatrix, "BS")
+bas
+
+
+
+
+
 
 
 ##############
@@ -84,7 +119,7 @@ boxplot(rich~MPA)
 
 
 # pairwise comparisons
-pw <- pairw.anova(rich, x=Ocean, method="tukey")
+pw <- pairw.anova(rich, x=MPA, method="tukey")
 plot.pairw(pw, type = 1, las=1, ylab="Richness per MPA")
 
 
@@ -99,7 +134,7 @@ plot(rich~temp)
 abline(lm(rich~temp))
 lines(lowess(rich ~ temp), col="red")
 
-plot(rich~oxi); hist(oxi)
+plot(rich~oxi)
 abline(lm(rich~oxi))
 
 plot(rich~coast)
@@ -230,17 +265,30 @@ lines((fishpred$fit-1.96*fishpred$se.fit) ~ newData$prod, type="l", col=gray(0.5
 
 #############################################
 ### Principal Coordinates Analysis (PCoA) ###
-drel <- dist(fishmatrix, method = "binary")
+
+first <- decostand(fishmatrix, method="hellinger")
+drel <- dist(first)
+
 pcoarel <- cmdscale(drel)
 ordiplot(pcoarel)
+
 ordiellipse(pcoarel, groups=Ocean, cex=1.7, label=T)
-ordihull(pcoarel, groups=PA, cex=1.7, label=T)
+ordihull(pcoarel1, groups=MPA, cex=1.7, label=T)
+
+
 
 
 #### Mapping and Fitting environmental variables ####
 
 # FITTING
 fit <- envfit(pcoarel, cbind(rich=rich,
+                             prod=prod,
+                             temp=temp,
+                             coast=coast,
+                             lat=lat,
+                             long=long,
+                             Ocean=Ocean,
+                             
                              perm=9999, na.rm=T))
 fit
 ordiplot(pcoarel)
@@ -348,7 +396,7 @@ plot.pairw(pwnes, type = 1, las=3, ylab="Distance to centroid")
 
 ######################################################################################
 # REPLACEMENT RULES
-repl.dbrda <- dbrda(dist[[1]] ~ fc25k+pa25k+elev25k+dcity+ag25k+lat+long, data = covdata, distance="bray")
+repl.dbrda <- dbrda(dist[[2]] ~ prod+temp+coast+lat+long, distance="bray")
 anova(repl.dbrda) # overall significance of the analysis
 anova(repl.dbrda, by="margin", permu=200) ## test for sig. environ. variables
 RsquareAdj(repl.dbrda)
@@ -362,21 +410,24 @@ plot(repl.dbrda)
 ### Ordinations with turnover!!! ############
 pcoarel1 <- cmdscale(dist[[1]], eig = TRUE)
 ordiplot(pcoarel1)
+
+
+
+
+
 #### Mapping and Fitting environmental variables ####
 
-# FITTING
-fit <- envfit(pcoarel1, cbind(#richness=richness,
-  lat=lat, long=long,
-  fc25k=fc25k,
-  pa25k=pa25k,
-  ag25k=ag25k,
-  elev25k=elev25k,
-  dcity=dcity,
-  effort=effort,
-  richness=richness),
-  perm=9999, na.rm=T)
+fit <- envfit(pcoarel, cbind(rich=rich,
+                             prod=prod,
+                             temp=temp,
+                             coast=coast,
+                             lat=lat,
+                             long=long,
+                             Ocean=Ocean,
+                             
+                             perm=9999, na.rm=T))
 fit
-
+ordiplot(pcoarel)
 plot(fit, p.=1, cex=0.7)
 
 modperm <- adonis(dist[[1]]~ag25k+fc25k+pa25k+dcity+lat+long)
@@ -479,3 +530,4 @@ x <- vegdist(fc25k, method = "euclidean")
 y <- 1-vegdist(os[, -1:-7], method = "bray")
 plot(x, y)
 lines(dd$Predictions[, "x"], dd$Predictions[,"mean"], col="red", lwd=2)
+
