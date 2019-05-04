@@ -52,6 +52,6 @@ fish$Rich <- mutate(fishmatrix, Total_richness = sum(FID))
 all_data_table$MPA_presence <- ifelse(all_data_table$WDPA_PID != " ", yes = NA, no = "MPA")
 count(all_data_table, all_data_table$MPA_presence)        
 
-
-
-
+#delete column WDPA_PID
+all_data_table <- all_data_table[,-(WDPA_PID)] 
+View(all_data_table)
