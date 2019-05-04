@@ -18,15 +18,11 @@ EnvVariables1<-merge(EnvCoast, EnvDOxy)
 EnvVariables2<-merge(EnvPProd, EnvSeaTemp)
 EnvVariables<-merge(EnvVariables1, EnvVariables2)
 
-View(EnvVariables)
-
 #Select out the columns to keep for fish
 Sp_Rich <- select(Richness, TARGET_FID, Join_Count, Latitude, Longitude)
 
 #Merge enviro data with species richness data
 FishEnviro <- merge(EnvVariables, Sp_Rich, by.x = 'FID', by.y = 'TARGET_FID')
-
-View(FishEnviro)
 
 #create table with selected data from Fish
 fish_selection <- select(Fish, TARGET_FID, BINOMIAL, LEGEND, WDPA_PID, NAME, DESIG, DESIG_TYPE, 
