@@ -31,3 +31,5 @@ fish_selection <- select(Fish, TARGET_FID, BINOMIAL, LEGEND, WDPA_PID, NAME, DES
 #Merge FishEnviro table with fish_selection table
 final_table <- merge(FishEnviro, fish_selection, by.x = "FID", by.y = "TARGET_FID", all = TRUE)
 View(final_table)
+
+write.csv(final_table, "data_for_analysis.csv")
