@@ -29,7 +29,7 @@ dim(fish) # 3072 columns,  296 columns
 dim(fishmatrix) # 3078 cells by 278 species
 table(fishmatrix)
 
-# set all values >=1 to 1
+#from species columns, set all values  >=1 to 1
 startcol=which(colnames(fish)=="Pres_Abs")+1
 endcol=ncol(fish)-2
 for(fish_species in colnames(fish)[startcol:endcol]){
