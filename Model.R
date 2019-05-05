@@ -11,6 +11,7 @@ library(modEvA) # for calculating explained deviance
 library(gstat) # for fitting semivariograms 
 library(sp)
 library(coefplot)
+library(dplyr)
 
 #setwd("C:/Users/JAML/Desktop/Bios2Create/1_Ecological_Synthesis/SS2019_MPA")
 
@@ -19,16 +20,21 @@ library(coefplot)
 ################
 
 fish <- read.csv("all_data_table.csv", header = T)
+View(fish)
 dim(fish) # 3072 columns,  296 columns
 
 # creating cells by species matrix for ordination
-fishmatrix <- as.matrix(fish[,17:294])
+#fishmatrix <- as.matrix(fish[,c(16, 18:294)])
+
 dim(fishmatrix) # 3078 cells by 278 species
 table(fishmatrix)
 
 # set all values >=1 to 1
-fishmatrix[which(fishmatrix > 1)] = 1
-table(fishmatrix)
+startcol=which(colnames(fish)=="Pres_Abs")+1
+endcol=ncol(fish)-2
+for(fish_species in colnames(fish)[startcol:endcol]){
+  fish[fish[,fish_species]>0,fish_species] = 1
+}
 
 # removing cells with no ocean designation
 # fish <- subset(fish, !fish$label==" ") DID IT BY HAND
@@ -36,36 +42,37 @@ table(fishmatrix)
 # For any ordination and multivariate analysis
 # Need data in matrix format
 # But can't include 1 nor last column (spp. richness)
-fishmatrix <- as.matrix(fish[,17:294])
+fish_1 <- as.matrix(fishmatrix[,2:278])
 dim(fishmatrix) # 3072 sites, 278 species
+View(fish_1)
 
 #AO
 fishAO <- subset(fish, fish$label=="AO")
-fishmatrixAO <- as.matrix(fishAO[,17:294])
+fishmatrixAO <- as.matrix(fishAO[,2:278])
 
 #IO
 fishIO <- subset(fish, fish$label=="IO")
-fishmatrixIO <- as.matrix(fishIO[,17:294])
+fishmatrixIO <- as.matrix(fishIO[,2:278])
 
 #NAO
 fishNAO <- subset(fish, fish$label=="NAO")
-fishmatrixNAO <- as.matrix(fishNAO[,17:294])
+fishmatrixNAO <- as.matrix(fishNAO[,2:278])
 
 #NPO
 fishNPO <- subset(fish, fish$label=="NPO")
-fishmatrixNPO <- as.matrix(fishNPO[,17:294])
+fishmatrixNPO <- as.matrix(fishNPO[,2:278])
 
 #SAO
 fishSAO <- subset(fish, fish$label=="SAO")
-fishmatrixSAO <- as.matrix(fishSAO[,17:294])
+fishmatrixSAO <- as.matrix(fishSAO[,2:278])
 
 #SO
 fishSO <- subset(fish, fish$label=="SO")
-fishmatrixSO <- as.matrix(fishSO[,17:294])
+fishmatrixSO <- as.matrix(fishSO[,2:278])
 
 #SPO
 fishSPO <- subset(fish, fish$label=="SPO")
-fishmatrixSPO <- as.matrix(fishSPO[,17:294])
+fishmatrixSPO <- as.matrix(fishSPO[,2:278])
 
 basAO <- beta.div.comp(fishmatrixAO, "BS")
 
