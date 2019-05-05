@@ -12,14 +12,23 @@ library(gstat) # for fitting semivariograms
 library(sp)
 library(coefplot)
 
-setwd("C:/Users/JAML/Desktop/Bios2Create/1_Ecological_Synthesis/SS2019_MPA")
+#setwd("C:/Users/JAML/Desktop/Bios2Create/1_Ecological_Synthesis/SS2019_MPA")
 
 ################
 # SPECIES DATA #
 ################
 
-fish <- read.csv("all_data_table_edited.csv", header = T)
+fish <- read.csv("all_data_table.csv", header = T)
 dim(fish) # 3072 columns,  296 columns
+
+# creating cells by species matrix for ordination
+fishmatrix <- as.matrix(fish[,17:294])
+dim(fishmatrix) # 3078 cells by 278 species
+table(fishmatrix)
+
+# set all values >=1 to 1
+fishmatrix[which(fishmatrix > 1)] = 1
+table(fishmatrix)
 
 # removing cells with no ocean designation
 # fish <- subset(fish, !fish$label==" ") DID IT BY HAND
@@ -58,9 +67,11 @@ fishmatrixSO <- as.matrix(fishSO[,17:294])
 fishSPO <- subset(fish, fish$label=="SPO")
 fishmatrixSPO <- as.matrix(fishSPO[,17:294])
 
-bas <- beta.div.comp(fishmatrix, "BS")
-bas
+basAO <- beta.div.comp(fishmatrixAO, "BS")
 
+
+#create empty array to put in turnover and nestedness results from the different ocean basins
+Turn_Nest <- data.frame(matrix(NA, nrow = 8, ncol = 2), stringsAsFactors = FALSE)
 
 
 
