@@ -27,20 +27,6 @@ final_table_distinct %>% glimpse
 
 #join enviro factor columns to species columns table
 all_data_table <- merge(final_table_distinct, sp_col_final, by = "FID")
-View(all_data_table)
-#write.csv(all_data_table, "all_data_table.csv")
-
-# renaming data table
-# fish <- all_data_table
-# head(fish)
-
-# # creating cells by species matrix for ordination
-# fishmatrix <- as.matrix(fish[,17:294])
-# dim(fishmatrix) # 3078 cells by 278 species
-# table(fishmatrix)
-# 
-# # set all values >=1 to 1
-# fishmatrix[which(fishmatrix > 1)] <- 1
 
 #add column of MPA presence
 all_data_table$MPA_presence <- ifelse(all_data_table$WDPA_PID != " ", yes = NA, no = "MPA")
@@ -54,3 +40,5 @@ View(all_data_table)
 all_data_table <- all_data_table %>%
   mutate(richness=rowSums(all_data_table[17:294]))
 glimpse(all_data_table)
+
+write.csv(all_data_table, "all_data_table.csv")
