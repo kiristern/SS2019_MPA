@@ -23,12 +23,7 @@ fish <- read.csv("all_data_table.csv", header = T)
 View(fish)
 dim(fish) # 3072 columns,  296 columns
 
-# creating cells by species matrix for ordination
-#fishmatrix <- as.matrix(fish[,c(16, 18:294)])
-
-dim(fishmatrix) # 3078 cells by 278 species
-table(fishmatrix)
-
+#ensure species with >1 values are set to 1 in species columns
 startcol=which(colnames(fish)=="Pres_Abs")+1
 endcol=ncol(fish)-2
 for(fish_species in colnames(fish)[startcol:endcol]){
@@ -39,58 +34,58 @@ max(fish[,startcol:endcol]) #view if code worked
 # removing cells with no ocean designation
 # fish <- subset(fish, !fish$label==" ") DID IT BY HAND
 
-# For any ordination and multivariate analysis
-# Need data in matrix format
-# But can't include 1 nor last column (spp. richness)
-fish_1 <- as.matrix(fishmatrix[,2:278])
-dim(fishmatrix) # 3072 sites, 278 species
-View(fish_1)
+# For any ordination and multivariate analysis, need data in matrix format
+# creating cells by species matrix for ordination
+fishmatrix <- as.matrix(fish[,c(16, 18:294)])
+
+dim(fishmatrix) # 3078 cells by 278 species
+View(fishmatrix)
 
 #AO
 fishAO <- subset(fish, fish$label=="ARCTIC OCEAN")
-fishmatrixAO <- as.matrix(fishAO[,2:278])
+fishmatrixAO <- as.matrix(fishAO[,startcol:endcol])
 
 basAO <- beta.div.comp(fishmatrixAO, "BS")
 basAO
 
 #IO
 fishIO <- subset(fish, fish$label=="INDIAN OCEAN")
-fishmatrixIO <- as.matrix(fishIO[,2:278])
+fishmatrixIO <- as.matrix(fishIO[,startcol:endcol])
 
 basIO <- beta.div.comp(fishmatrixIO, "BS")
 head(basIO)
 
 #NAO
 fishNAO <- subset(fish, fish$label=="NORTH ATLANTIC OCEAN")
-fishmatrixNAO <- as.matrix(fishNAO[,2:278])
+fishmatrixNAO <- as.matrix(fishNAO[,startcol:endcol])
 
 basNAO <- beta.div.comp(fishmatrixNAO, "BS")
 head(basNAO)
 
 #NPO
 fishNPO <- subset(fish, fish$label=="NORTH PACIFIC OCEAN")
-fishmatrixNPO <- as.matrix(fishNPO[,2:278])
+fishmatrixNPO <- as.matrix(fishNPO[,startcol:endcol])
 
 basNPO <- beta.div.comp(fishmatrixNPO, "BS")
 head(basNPO)
 
 #SAO
 fishSAO <- subset(fish, fish$label=="SOUTH ATLANTIC OCEAN")
-fishmatrixSAO <- as.matrix(fishSAO[,2:278])
+fishmatrixSAO <- as.matrix(fishSAO[,startcol:endcol])
 
 basSAO <- beta.div.comp(fishmatrixSAO, "BS")
 head(basSAO)
 
 #SO
 fishSO <- subset(fish, fish$label=="SOUTHERN OCEAN")
-fishmatrixSO <- as.matrix(fishSO[,2:278])
+fishmatrixSO <- as.matrix(fishSO[,startcol:endcol])
 
 basSO <- beta.div.comp(fishmatrixSO, "BS")
 head(basSO)
 
 #SPO
 fishSPO <- subset(fish, fish$label=="SOUTH PACIFIC OCEAN")
-fishmatrixSPO <- as.matrix(fishSPO[,2:278])
+fishmatrixSPO <- as.matrix(fishSPO[,startcol:endcol])
 
 basSPO <- beta.div.comp(fishmatrixSPO, "BS")
 head(basSPO)
