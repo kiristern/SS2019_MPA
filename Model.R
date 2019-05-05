@@ -29,12 +29,12 @@ dim(fish) # 3072 columns,  296 columns
 dim(fishmatrix) # 3078 cells by 278 species
 table(fishmatrix)
 
-#from species columns, set all values  >=1 to 1
 startcol=which(colnames(fish)=="Pres_Abs")+1
 endcol=ncol(fish)-2
 for(fish_species in colnames(fish)[startcol:endcol]){
   fish[fish[,fish_species]>0,fish_species] = 1
 }
+max(fish[,startcol:endcol]) #view if code worked
 
 # removing cells with no ocean designation
 # fish <- subset(fish, !fish$label==" ") DID IT BY HAND
@@ -47,34 +47,57 @@ dim(fishmatrix) # 3072 sites, 278 species
 View(fish_1)
 
 #AO
-fishAO <- subset(fish, fish$label=="AO")
+fishAO <- subset(fish, fish$label=="ARCTIC OCEAN")
 fishmatrixAO <- as.matrix(fishAO[,2:278])
 
+basAO <- beta.div.comp(fishmatrixAO, "BS")
+basAO
+
 #IO
-fishIO <- subset(fish, fish$label=="IO")
+fishIO <- subset(fish, fish$label=="INDIAN OCEAN")
 fishmatrixIO <- as.matrix(fishIO[,2:278])
 
+basIO <- beta.div.comp(fishmatrixIO, "BS")
+head(basIO)
+
 #NAO
-fishNAO <- subset(fish, fish$label=="NAO")
+fishNAO <- subset(fish, fish$label=="NORTH ATLANTIC OCEAN")
 fishmatrixNAO <- as.matrix(fishNAO[,2:278])
 
+basNAO <- beta.div.comp(fishmatrixNAO, "BS")
+head(basNAO)
+
 #NPO
-fishNPO <- subset(fish, fish$label=="NPO")
+fishNPO <- subset(fish, fish$label=="NORTH PACIFIC OCEAN")
 fishmatrixNPO <- as.matrix(fishNPO[,2:278])
 
+basNPO <- beta.div.comp(fishmatrixNPO, "BS")
+head(basNPO)
+
 #SAO
-fishSAO <- subset(fish, fish$label=="SAO")
+fishSAO <- subset(fish, fish$label=="SOUTH ATLANTIC OCEAN")
 fishmatrixSAO <- as.matrix(fishSAO[,2:278])
 
+basSAO <- beta.div.comp(fishmatrixSAO, "BS")
+head(basSAO)
+
 #SO
-fishSO <- subset(fish, fish$label=="SO")
+fishSO <- subset(fish, fish$label=="SOUTHERN OCEAN")
 fishmatrixSO <- as.matrix(fishSO[,2:278])
 
+basSO <- beta.div.comp(fishmatrixSO, "BS")
+head(basSO)
+
 #SPO
-fishSPO <- subset(fish, fish$label=="SPO")
+fishSPO <- subset(fish, fish$label=="SOUTH PACIFIC OCEAN")
 fishmatrixSPO <- as.matrix(fishSPO[,2:278])
 
-basAO <- beta.div.comp(fishmatrixAO, "BS")
+basSPO <- beta.div.comp(fishmatrixSPO, "BS")
+head(basSPO)
+
+#total world ocean
+basWO <- beta.div.comp(fishmatrix, "BS")
+basWO
 
 
 #create empty array to put in turnover and nestedness results from the different ocean basins
