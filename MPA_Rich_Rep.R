@@ -45,6 +45,10 @@
     group_by(BINOMIAL) %>%
     mutate(TotNum = in_MPA + out_MPA, Prop = (in_MPA/TotNum)*100)
   
+#Calculating the percent of total species that have some proportion of their range within
+#an MPA
+  sum(MPA_tab$Prop > 0)/(sum(MPA_tab$Prop >= 0))
+  
 #------------------------------------------------------------------------------------------  
 #Create a plot to visualize proportion representation
   
